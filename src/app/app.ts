@@ -1,65 +1,43 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import Swal from 'sweetalert2';
+
+import { PersonalComponent } from './components/personal/personal';
+import { AddressComponent } from './components/address/address';
+import { PreviewComponent } from './components/preview/preview';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    PersonalComponent,
+    AddressComponent,
+    PreviewComponent
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
 
-  step = 1;
+  step: number = 1;
 
-  formData: any = {
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    state: '',
-    pincode: ''
-  };
+  formData: any = {};
 
-  next() {
-    if (this.step === 1) {
-      if (!this.formData.name || !this.formData.email || !this.formData.phone) {
-        Swal.fire('Error', 'Please fill all personal details', 'error');
-        return;
-      }
-    }
-
-    if (this.step === 2) {
-      if (!this.formData.address || !this.formData.city || !this.formData.state || !this.formData.pincode) {
-        Swal.fire('Error', 'Please fill all address details', 'error');
-        return;
-      }
-    }
-
-    this.step++;
+  // After Personal Step
+  handlePersonal(data: any) {
+    this.formData = { ...this.formData, ...data };
+    this.step = 2;
   }
 
-  back() {
-    this.step--;
+  // After Address Step
+  handleAddress(data: any) {
+    this.formData = { ...this.formData, ...data };
+    this.step = 3;
   }
 
+  // Edit Button
   edit() {
     this.step = 1;
   }
 
-  submit() {
-    Swal.fire({
-      title: 'Confirm Submission?',
-      icon: 'question',
-      showCancelButton: true
-    }).then(result => {
-      if (result.isConfirmed) {
-        localStorage.setItem('userData', JSON.stringify(this.formData));
-        Swal.fire('Success', 'Data Saved Successfully!', 'success');
-      }
-    });
-  }
 }

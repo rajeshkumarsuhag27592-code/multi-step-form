@@ -1,88 +1,54 @@
-<div class="max-w-2xl mx-auto mt-10 bg-white shadow-lg rounded p-6">
+<div class="min-h-screen bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-200 flex items-center justify-center">
 
-  <!-- Stepper -->
-  <div class="flex justify-between mb-6 text-lg font-semibold">
-    <div [class.text-blue-600]="step===1">1. Personal</div>
-    <div [class.text-blue-600]="step===2">2. Address</div>
-    <div [class.text-blue-600]="step===3">3. Preview</div>
-  </div>
+  <div class="w-full max-w-2xl bg-white shadow-2xl rounded-3xl p-10 transition-all duration-500">
 
-  <!-- Step 1 -->
-  <div *ngIf="step===1" class="space-y-4">
-    <input type="text" placeholder="Name"
-      [(ngModel)]="formData.name"
-      class="w-full border p-2 rounded">
+    <!-- Stepper -->
+    <div class="flex items-center justify-between mb-10">
 
-    <input type="email" placeholder="Email"
-      [(ngModel)]="formData.email"
-      class="w-full border p-2 rounded">
+      <div class="flex-1 flex items-center">
+        <div class="w-12 h-12 flex items-center justify-center rounded-full text-white font-bold transition"
+             [ngClass]="step>=1 ? 'bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg' : 'bg-gray-300'">
+          1
+        </div>
+        <div class="flex-1 h-1"
+             [ngClass]="step>1 ? 'bg-gradient-to-r from-blue-500 to-indigo-600' : 'bg-gray-300'">
+        </div>
+      </div>
 
-    <input type="text" placeholder="Phone"
-      [(ngModel)]="formData.phone"
-      class="w-full border p-2 rounded">
+      <div class="flex-1 flex items-center">
+        <div class="w-12 h-12 flex items-center justify-center rounded-full text-white font-bold transition"
+             [ngClass]="step>=2 ? 'bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg' : 'bg-gray-300'">
+          2
+        </div>
+        <div class="flex-1 h-1"
+             [ngClass]="step>2 ? 'bg-gradient-to-r from-blue-500 to-indigo-600' : 'bg-gray-300'">
+        </div>
+      </div>
 
-    <button (click)="next()"
-      class="bg-blue-600 text-white px-4 py-2 rounded">
-      Next
-    </button>
-  </div>
+      <div class="w-12 h-12 flex items-center justify-center rounded-full text-white font-bold transition"
+           [ngClass]="step===3 ? 'bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg' : 'bg-gray-300'">
+        3
+      </div>
 
-  <!-- Step 2 -->
-  <div *ngIf="step===2" class="space-y-4">
-    <input type="text" placeholder="Address"
-      [(ngModel)]="formData.address"
-      class="w-full border p-2 rounded">
-
-    <input type="text" placeholder="City"
-      [(ngModel)]="formData.city"
-      class="w-full border p-2 rounded">
-
-    <input type="text" placeholder="State"
-      [(ngModel)]="formData.state"
-      class="w-full border p-2 rounded">
-
-    <input type="text" placeholder="Pincode"
-      [(ngModel)]="formData.pincode"
-      class="w-full border p-2 rounded">
-
-    <div class="flex justify-between">
-      <button (click)="back()"
-        class="bg-gray-500 text-white px-4 py-2 rounded">
-        Back
-      </button>
-
-      <button (click)="next()"
-        class="bg-blue-600 text-white px-4 py-2 rounded">
-        Next
-      </button>
-    </div>
-  </div>
-
-  <!-- Step 3 -->
-  <div *ngIf="step===3" class="space-y-3">
-
-    <div class="border p-4 rounded bg-gray-50">
-      <p><strong>Name:</strong> {{formData.name}}</p>
-      <p><strong>Email:</strong> {{formData.email}}</p>
-      <p><strong>Phone:</strong> {{formData.phone}}</p>
-      <hr class="my-2">
-      <p><strong>Address:</strong> {{formData.address}}</p>
-      <p><strong>City:</strong> {{formData.city}}</p>
-      <p><strong>State:</strong> {{formData.state}}</p>
-      <p><strong>Pincode:</strong> {{formData.pincode}}</p>
     </div>
 
-    <div class="flex justify-end gap-4">
-      <button (click)="edit()"
-        class="bg-yellow-500 text-white px-4 py-2 rounded">
-        Edit
-      </button>
+    <!-- Steps -->
+    <app-personal
+      *ngIf="step===1"
+      (next)="handlePersonal($event)">
+    </app-personal>
 
-      <button (click)="submit()"
-        class="bg-green-600 text-white px-4 py-2 rounded">
-        Submit
-      </button>
-    </div>
+    <app-address
+      *ngIf="step===2"
+      (next)="handleAddress($event)"
+      (back)="step=1">
+    </app-address>
+
+    <app-preview
+      *ngIf="step===3"
+      [data]="formData"
+      (edit)="edit()">
+    </app-preview>
+
   </div>
-
 </div>
